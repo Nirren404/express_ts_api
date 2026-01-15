@@ -8,4 +8,6 @@ router.get("/", getProducts);
 
 router.get("/:id", getproductById);
 
+router.post("/", getProducts);
+
 export default router;
