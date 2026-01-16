@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import * as productService from "../services/product.services.js";
 
 export const getProducts = (req: Request, res: Response) => {
   const products = [
@@ -9,10 +10,35 @@ export const getProducts = (req: Request, res: Response) => {
   res.status(200).json(products);
 };
 
-export const createProduct = (req: Request, res: Response) => {
-  const { name, price } = req.body;
+export const createProduct = async (
+  req: Request<{}, {}, productService.Product>,
+  res: Response
+) => {
+  try {
+    const { name, price } = req.body;
+    const newProduct = await productService.createProduct(name, price);
+    res.status(201).json({
+      message: "Product created successfully",
+      product: newProduct,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to create product",
+      error,
+    });
+  }
+};
 
-  res.status(201).json({ message: "Product created", data: { name, price } });
+export const getAllProducts = async (req: Request, res: Response) => {
+  try {
+    const products = await productService.findAllProducts();
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to retrieve products",
+      error,
+    });
+  }
 };
 
 export const getproductById = (req: Request, res: Response) => {
