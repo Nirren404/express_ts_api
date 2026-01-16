@@ -4,12 +4,11 @@ import { timeStamp } from "node:console";
 
 export const createApp = () => {
   const app = express();
+  app.use(express.json());
 
   // Product routes
   app.use("/api/products", productRoutes);
   app.use("/api/products/:id", productRoutes);
-
-  app.use(express.json());
 
   app.get("/health", (req: Request, res: Response) => {
     res

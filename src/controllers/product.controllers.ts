@@ -1,14 +1,5 @@
 import type { Request, Response } from "express";
-import * as productService from "../services/product.services.js";
-
-export const getProducts = (req: Request, res: Response) => {
-  const products = [
-    { id: 1, name: "Apple", price: 100 },
-    { id: 2, name: "Pineapple", price: 150 },
-  ];
-
-  res.status(200).json(products);
-};
+import * as productService from "../services/product.services";
 
 export const createProduct = async (
   req: Request<{}, {}, productService.Product>,

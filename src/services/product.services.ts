@@ -11,11 +11,6 @@ const products: Product[] = [
 ];
 
 // Step 3  done,
-const findAll = () => {};
-
-export const findAllProducts = async (): Promise<Product[]> => {
-  return products;
-};
 
 export const createProduct = async (
   name: string,
@@ -36,6 +31,10 @@ export const createProduct = async (
       };
       products.push(newProduct);
       resolve(newProduct);
-    }, 1000);
+    }, 100);
   });
+};
+
+export const findAllProducts = async (): Promise<Product[]> => {
+  return products;
 };
