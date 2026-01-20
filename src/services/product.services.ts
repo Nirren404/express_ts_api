@@ -1,6 +1,4 @@
-import { ProductModel } from "../models/product.model";
-
-//Step 2 done
+import { ProductDocument, ProductModel } from "../models/product.model";
 
 export interface Product {
   id: number;
@@ -8,36 +6,27 @@ export interface Product {
   price: number;
 }
 
-const products: Product[] = [
-  { id: 1, name: "Apple", price: 100 },
-  { id: 2, name: "Pineapple", price: 150 },
-];
-
-// Step 3  done,
-
-export const createProduct = async (
-  name: string,
-  price: number,
-): Promise<Product> => {
-  return new Promise((resolve, reject) => {
-    const existingProduct = products.find((product) => product.name === name);
-
-    setTimeout(() => {
-      if (existingProduct) {
-        reject(new Error("Product already exists"));
-        return;
-      }
-      const newProduct: Product = {
-        id: products.length + 1,
-        name,
-        price,
-      };
-      products.push(newProduct);
-      resolve(newProduct);
-    }, 100);
-  });
+export const createProduct = async (name: string, price: number) => {
+  const existingProduct = await ProductModel.findOne({ name });
+  if (existingProduct) {
+    throw new Error("Product with this name already exists");
+  }
+  const newProduct: ProductDocument = {
+    name,
+    price,
+  };
+  const createdProduct = await ProductModel.create(newProduct);
+  return createdProduct;
 };
 
-export const findAllProducts = async (): Promise<Product[]> => {
+export const findAllProducts = async () => {
+  const products = await ProductModel.find();
+
+  if (products.length === 0) {
+    return {
+      message: "no products found sorry.",
+    };
+  }
+
   return products;
 };
