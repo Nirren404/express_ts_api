@@ -1,4 +1,7 @@
+import { ProductModel } from "../models/product.model";
+
 //Step 2 done
+
 export interface Product {
   id: number;
   name: string;
@@ -14,7 +17,7 @@ const products: Product[] = [
 
 export const createProduct = async (
   name: string,
-  price: number
+  price: number,
 ): Promise<Product> => {
   return new Promise((resolve, reject) => {
     const existingProduct = products.find((product) => product.name === name);
