@@ -34,3 +34,14 @@ export const getproductById = (req: Request, res: Response) => {
 
   res.json({ id: productid });
 };
+
+export const editProduct = async (
+  req: Request<{ id: string }, {}, productService.Product>,
+  res: Response,
+) => {
+  const changeProduct = await productService.editExistingProduct(
+    req.params.id,
+    req.body,
+  );
+  res.status(200).json(changeProduct);
+};

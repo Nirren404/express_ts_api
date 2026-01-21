@@ -30,3 +30,17 @@ export const findAllProducts = async () => {
 
   return products;
 };
+
+export const editExistingProduct = async (
+  id: string,
+  updateData: ProductDocument,
+) => {
+  const updatedProduct = await editProduct(id, updateData);
+  return updatedProduct;
+};
+const editProduct = async (id: string, updateData: ProductDocument) => {
+  const updatedProduct = await ProductModel.findByIdAndUpdate(id, updateData, {
+    new: true,
+  });
+  return updatedProduct;
+};
