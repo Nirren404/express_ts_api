@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import * as userService from "../services/user.service";
 
 export const createUser = async (
-  req: Request<{}, {}, userService.newUser>,
+  req: Request<{}, {}, userService.Users>,
   res: Response,
 ) => {
   try {
@@ -22,3 +22,11 @@ export const getAllUser = async (req: Request, res: Response) => {
     res.status(500).json({ msg: "Failed to retrive users", error });
   }
 };
+
+export const getUserById = async (req: Request, res: Response) => {
+    try {
+        const 
+    } catch (error) {
+        
+    }
+}

@@ -1,5 +1,10 @@
 import { UserDocument, UserModel } from "../models/user.model";
 
+export interface Users {
+  name: string;
+  email: string;
+  age: number;
+}
 // Creating a new user
 export const createUser = async (name: string, email: string, age: number) => {
   const newUser: UserDocument = new UserModel({ name, email, age });
@@ -7,13 +12,13 @@ export const createUser = async (name: string, email: string, age: number) => {
 };
 
 // Getting all users matching the criteria
-export const getAllUsers = async (name: string, email: string, age: number) => {
-  const finduser: UserDocument[] = await UserModel.find({
-    name: name,
-    email: email,
-    age: age,
-  });
-  return finduser;
+export const getAllUsers = async () => {
+  const users = await UserModel.find();
+
+  if (users.length === 0) {
+    throw new Error("No users found");
+  }
+  return users;
 };
 
 // Getting a user by ID
@@ -22,6 +27,7 @@ export const getUserById = async (id: string) => {
   return getUserId;
 };
 
+//
 export const updateById = async (
   id: string,
   updateData: Partial<UserDocument>,
