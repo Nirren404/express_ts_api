@@ -24,9 +24,14 @@ export const getAllUser = async (req: Request, res: Response) => {
 };
 
 export const getUserById = async (req: Request, res: Response) => {
-    try {
-        const 
-    } catch (error) {
-        
-    }
-}
+  const productId = req.params.id;
+  res.json({ id: productId });
+};
+
+export const updateById = async (
+  req: Request<{ id: string }, {}, Partial<userService.Users>>,
+  res: Response,
+) => {
+  const changeUser = await userService.updateById(req.params.id, req.body);
+  res.status(200).json(changeUser);
+};
