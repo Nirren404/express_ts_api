@@ -4,14 +4,22 @@ export interface Users {
   name: string;
   email: string;
   age: number;
+  id: string;
 }
-// Creating a new user
+
 export const createUser = async (name: string, email: string, age: number) => {
-  const newUser: UserDocument = new UserModel({ name, email, age });
-  return await UserModel.create({ name, email, age });
+  const newUser: UserDocument = {
+    name,
+    email,
+    age,
+    id: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+  const createdUser = await UserModel.create(newUser);
+  return createdUser;
 };
 
-// Getting all users matching the criteria
 export const getAllUsers = async () => {
   const users = await UserModel.find();
 
@@ -21,7 +29,6 @@ export const getAllUsers = async () => {
   return users;
 };
 
-// Getting a user by ID
 export const getUserById = async (id: string) => {
   const getUserId = await UserModel.findById(id);
   return getUserId;
@@ -34,12 +41,11 @@ export const updateById = async (
 ) => {
   const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, {
     new: true,
+    runValidators: true,
   });
   return updatedUser;
 };
 
-// Create user.service.ts (delete)
 export const deleteById = async (id: string) => {
-  const deleteduser = await UserModel.findByIdAndDelete(id);
-  return deleteduser;
+  return await UserModel.findByIdAndDelete(id);
 };
