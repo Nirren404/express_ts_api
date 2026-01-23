@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { z } from "zod";
 
 export interface UserDocument {
   id: string;
@@ -8,6 +9,16 @@ export interface UserDocument {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export const createUservalidation = z.object({
+  body: z.object({
+    name: z.string("Please enter a valid name").min(2),
+    email: z.email("Please enter a valid email"),
+    age: z.number("Please enter a valid age").min(0).max(122),
+  }),
+});
+
+export type CreateUserTypeZ = z.infer<typeof createUservalidation>["body"];
 
 const userSchema = new mongoose.Schema(
   {

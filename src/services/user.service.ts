@@ -1,4 +1,5 @@
 import { UserDocument, UserModel } from "../models/user.model";
+import { AppError } from "../utils/app.error";
 
 export interface Users {
   name: string;
@@ -22,15 +23,17 @@ export const createUser = async (name: string, email: string, age: number) => {
 
 export const getAllUsers = async () => {
   const users = await UserModel.find();
-
   if (users.length === 0) {
-    throw new Error("No users found");
+    throw new AppError("No users found", 404);
   }
   return users;
 };
 
 export const getUserById = async (id: string) => {
   const getUserId = await UserModel.findById(id);
+  if (!getUserId) {
+    throw new AppError("User not found", 404);
+  }
   return getUserId;
 };
 
@@ -43,6 +46,9 @@ export const updateById = async (
     new: true,
     runValidators: true,
   });
+  if (!updatedUser) {
+    throw new AppError("User not found", 404);
+  }
   return updatedUser;
 };
 
