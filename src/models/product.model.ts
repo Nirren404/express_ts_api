@@ -3,12 +3,14 @@ import mongoose from "mongoose";
 export interface ProductDocument {
   name: string;
   price: number;
+  description?: string;
 }
 
 const productSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
     price: { type: Number, required: true },
+    description: { type: String },
   },
   { timestamps: true },
 );
