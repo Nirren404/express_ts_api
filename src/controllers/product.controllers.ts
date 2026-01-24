@@ -9,47 +9,69 @@ export const createProduct = async (
 ) => {
   try {
     const { name, price, description } = req.body;
-    const newProduct = await productService.createProduct(name, price);
-    res.status(201).json(newProduct);
+    const newProduct = await productService.createProduct(
+      name,
+      price,
+      description,
+    );
+    res
+      .status(201)
+      .json({ status: "Product created successfully", data: newProduct });
   } catch (error) {
-    res.status(500).json({
-      message: "Failed to create product",
-      error,
-    });
+    next(error);
   }
 };
 
-export const getAllProducts = async (req: Request, res: Response) => {
+export const getAllProducts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const products = await productService.findAllProducts();
     res.status(200).json(products);
   } catch (error) {
-    res.status(500).json({
-      message: "Failed to retrieve products",
-      error,
-    });
+    next(error);
   }
 };
 
-export const getproductById = (req: Request, res: Response) => {
-  const productid = req.params.id;
-
-  res.json({ id: productid });
+export const getproductById = async (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const productById = await productService.findProductById(req.params.id);
+    res.status(200).json(productById);
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const UpdateProductById = async (
-  req: Request<{ id: string }, {}, productService.Product>,
+  req: Request<{ id: string }, {}, Partial<CreateProductTypeZ>>,
   res: Response,
+  next: NextFunction,
 ) => {
-  const changeProduct = await productService.updateProductById(
-    req.params.id,
-    req.body,
-  );
-  res.status(200).json(changeProduct);
+  try {
+    const updatedProduct = await productService.updateProductById(
+      req.params.id,
+      req.body,
+    );
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const deleteProduct = (req: Request, res: Response) => {
-  const productid = req.params.id;
-
-  res.json({ id: productid });
+export const deleteProduct = async (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction,
+) => {
+  const removeProduct = await productService.deleteProductById(req.params.id);
+  if (!removeProduct) {
+    return res.status(404).json({ message: "Product not found!" });
+  }
+  res.status(200).json({ message: "Product deleted successfully" });
 };
