@@ -1,12 +1,14 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import * as productService from "../services/product.services";
+import { CreateProductTypeZ } from "../schemas/product.schema";
 
 export const createProduct = async (
-  req: Request<{}, {}, productService.Product>,
+  req: Request<{}, {}, CreateProductTypeZ>,
   res: Response,
+  next: NextFunction,
 ) => {
   try {
-    const { name, price } = req.body;
+    const { name, price, description } = req.body;
     const newProduct = await productService.createProduct(name, price);
     res.status(201).json(newProduct);
   } catch (error) {
