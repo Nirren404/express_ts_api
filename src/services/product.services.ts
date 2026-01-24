@@ -22,7 +22,6 @@ export const createProduct = async (
   if (existingProduct) {
     throw new AppError("Product with this name already exists", 409);
   }
-
   const createdProduct = await ProductModel.create(newProduct);
   return createdProduct;
 };
