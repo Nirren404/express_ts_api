@@ -4,7 +4,7 @@ import {
   getAllProducts,
 } from "../controllers/product.controllers";
 import { getproductById } from "../controllers/product.controllers";
-import { editProduct } from "../controllers/product.controllers";
+import { UpdateProductById } from "../controllers/product.controllers";
 import { validate } from "../middleware/validate";
 import { createProductValidation } from "../schemas/product.schema";
 
@@ -14,6 +14,6 @@ const router = Router();
 router.post("/", validate(createProductValidation), createProduct);
 router.get("/", getAllProducts);
 router.get("/:id", getproductById);
-router.patch("/:id", editProduct);
+router.patch("/:id", UpdateProductById);
 
 export default router;

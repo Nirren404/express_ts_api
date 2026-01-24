@@ -28,17 +28,25 @@ export const createProduct = async (
 
 export const findAllProducts = async () => {
   const products = await ProductModel.find();
-
   if (products.length === 0) {
-    return {
-      message: "no products found sorry.",
-    };
+    throw new AppError("No products found", 404);
   }
 
   return products;
 };
 
-export const editProduct = async (id: string, updateData: ProductDocument) => {
+export const findProductById = async (id: string) => {
+  const product = await ProductModel.findById(id);
+  if (!findProductById) {
+    throw new AppError("Product not found", 404);
+  }
+  return product;
+};
+
+export const updateProductById = async (
+  id: string,
+  updateData: ProductDocument,
+) => {
   const updatedProduct = await ProductModel.findByIdAndUpdate(id, updateData, {
     new: true,
   });

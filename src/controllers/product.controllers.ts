@@ -35,11 +35,11 @@ export const getproductById = (req: Request, res: Response) => {
   res.json({ id: productid });
 };
 
-export const editProduct = async (
+export const UpdateProductById = async (
   req: Request<{ id: string }, {}, productService.Product>,
   res: Response,
 ) => {
-  const changeProduct = await productService.editProduct(
+  const changeProduct = await productService.updateProductById(
     req.params.id,
     req.body,
   );
