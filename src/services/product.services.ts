@@ -4,9 +4,14 @@ export interface Product {
   id: number;
   name: string;
   price: number;
+  description?: string;
 }
 
-export const createProduct = async (name: string, price: number) => {
+export const createProduct = async (
+  name: string,
+  price: number,
+  description?: string,
+) => {
   const existingProduct = await ProductModel.findOne({ name });
   if (existingProduct) {
     throw new Error("Product with this name already exists");
