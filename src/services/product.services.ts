@@ -1,4 +1,5 @@
 import { ProductDocument, ProductModel } from "../models/product.model";
+import { AppError } from "../utils/app.error";
 
 export interface Product {
   id: number;
@@ -12,14 +13,16 @@ export const createProduct = async (
   price: number,
   description?: string,
 ) => {
-  const existingProduct = await ProductModel.findOne({ name });
-  if (existingProduct) {
-    throw new Error("Product with this name already exists");
-  }
   const newProduct: ProductDocument = {
     name,
     price,
+    description,
   };
+  const existingProduct = await ProductModel.findOne({ name });
+  if (existingProduct) {
+    throw new AppError("Product with this name already exists", 409);
+  }
+
   const createdProduct = await ProductModel.create(newProduct);
   return createdProduct;
 };
