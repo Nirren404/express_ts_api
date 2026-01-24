@@ -17,11 +17,17 @@ export const createUser = async (name: string, email: string, age: number) => {
     createdAt: new Date(),
     updatedAt: new Date(),
   };
+  // if creating user incorrectly, throw error with error code which is 400
 
   const existingUser = await UserModel.findOne({ email: email });
   if (existingUser) {
     throw new AppError("User with this email already exists", 409);
   }
+
+  if (!name || !email || age === undefined) {
+    throw new AppError("Invalid user data", 400);
+  }
+
   const createdUser = await UserModel.create(newUser);
   return createdUser;
 };
