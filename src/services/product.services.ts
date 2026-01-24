@@ -45,10 +45,18 @@ export const findProductById = async (id: string) => {
 
 export const updateProductById = async (
   id: string,
-  updateData: ProductDocument,
+  updateData: Partial<ProductDocument>,
 ) => {
   const updatedProduct = await ProductModel.findByIdAndUpdate(id, updateData, {
     new: true,
+    runValidators: true,
   });
+  if (!updatedProduct) {
+    throw new AppError("Product not found", 404);
+  }
   return updatedProduct;
+};
+
+export const deleteProductById = async (id: string) => {
+  return await ProductModel.findByIdAndDelete(id);
 };
