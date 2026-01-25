@@ -6,15 +6,15 @@ import {
 import { getproductById } from "../controllers/product.controllers";
 import { UpdateProductById } from "../controllers/product.controllers";
 import { validate } from "../middleware/validate.middleware";
-import { createProductValidation } from "../schemas/product.schema";
+import { ProductRulesValidation } from "../schemas/product.schema";
 import { deleteProduct } from "../controllers/product.controllers";
 
 const router = Router();
 
-router.post("/", validate(createProductValidation), createProduct);
+router.post("/", validate(ProductRulesValidation), createProduct);
 router.get("/", getAllProducts);
 router.get("/:id", getproductById);
-router.patch("/:id", validate(createProductValidation), UpdateProductById);
+router.patch("/:id", validate(ProductRulesValidation), UpdateProductById);
 router.delete("/:id", deleteProduct);
 
 export default router;
