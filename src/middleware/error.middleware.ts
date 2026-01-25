@@ -14,12 +14,15 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     | Array<{ path: string; message: string; code?: string }>
     | undefined;
 
+  if (err instanceof SyntaxError && "body" in err) {
+    statusCode = 400;
+    message = "Invalid JSON payload passed";
+  }
+
   if (err instanceof AppError) {
     statusCode = err.statusCode;
     message = err.message;
   }
-  // ! ---------------------------------------------------------------------------------------
-  res.status(statusCode).json({ message, details, errors });
 
   if (err instanceof ZodError) {
     statusCode = 400;
@@ -58,4 +61,6 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     message = "Duplicate Key Error";
     details = (err as any).keyValue ?? (err as any).keyValues;
   }
+
+  res.status(statusCode).json({ message, details, errors });
 };

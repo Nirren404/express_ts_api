@@ -5,7 +5,7 @@ import {
 } from "../controllers/product.controllers";
 import { getproductById } from "../controllers/product.controllers";
 import { UpdateProductById } from "../controllers/product.controllers";
-import { validate } from "../middleware/validate";
+import { validate } from "../middleware/validate.middleware";
 import { createProductValidation } from "../schemas/product.schema";
 
 const router = Router();
