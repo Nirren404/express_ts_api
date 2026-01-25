@@ -37,7 +37,7 @@ export const findAllProducts = async () => {
 
 export const findProductById = async (id: string) => {
   const product = await ProductModel.findById(id);
-  if (!findProductById) {
+  if (!product) {
     throw new AppError("Product not found", 404);
   }
   return product;
@@ -58,5 +58,9 @@ export const updateProductById = async (
 };
 
 export const deleteProductById = async (id: string) => {
-  return await ProductModel.findByIdAndDelete(id);
+  const deletedProduct = await ProductModel.findByIdAndDelete(id);
+  if (!deletedProduct) {
+    throw new AppError("Product not found", 404);
+  }
+  return deletedProduct;
 };

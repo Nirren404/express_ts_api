@@ -7,6 +7,10 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   void req;
   void next;
 
+  if (err instanceof SyntaxError && "body" in err) {
+    return res.status(400).json({ message: "Invalid JSON Content" });
+  }
+
   let statusCode = 500;
   let message = "Server Error";
   let details: unknown;
@@ -14,15 +18,11 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     | Array<{ path: string; message: string; code?: string }>
     | undefined;
 
-  if (err instanceof SyntaxError && "body" in err) {
-    statusCode = 400;
-    message = "Invalid JSON payload passed";
-  }
-
   if (err instanceof AppError) {
     statusCode = err.statusCode;
     message = err.message;
   }
+  // ! ---------------------------------------------------------------------------------------
 
   if (err instanceof ZodError) {
     statusCode = 400;
