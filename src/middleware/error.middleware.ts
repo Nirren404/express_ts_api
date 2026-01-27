@@ -19,7 +19,6 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     message = err.message;
   }
   // ! ---------------------------------------------------------------------------------------
-  res.status(statusCode).json({ message, details, errors });
 
   if (err instanceof ZodError) {
     statusCode = 400;
@@ -58,4 +57,6 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     message = "Duplicate Key Error";
     details = (err as any).keyValue ?? (err as any).keyValues;
   }
+
+  res.status(statusCode).json({ message, details, errors });
 };

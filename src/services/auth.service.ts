@@ -19,6 +19,11 @@ export const registerUserService = async (userData: RegisterUserTypeZ) => {
     age,
     password: hashedpassword,
   };
+
+  const existingUser = await UserModel.findOne({ email: email });
+  if (existingUser) {
+    throw new AppError("User already exists with this email", 409);
+  }
   const createdUser = await UserModel.create(newUser);
   return createdUser;
 };
