@@ -62,9 +62,10 @@ export const deleteById = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const removeUser = await userService.deleteById(req.params.id);
-  if (!removeUser) {
-    return res.status(404).json({ msg: "User not found" });
+  try {
+    await userService.deleteById(req.params.id);
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    next(error);
   }
-  res.status(200).json({ msg: "User deleted successfully" });
 };

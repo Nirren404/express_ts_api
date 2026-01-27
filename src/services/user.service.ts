@@ -64,5 +64,9 @@ export const updateById = async (
 };
 
 export const deleteById = async (id: string) => {
-  return await UserModel.findByIdAndDelete(id);
+  const deletedUser = await UserModel.findByIdAndDelete(id);
+  if (!deletedUser) {
+    throw new AppError("User not found", 404);
+  }
+  return deletedUser;
 };
