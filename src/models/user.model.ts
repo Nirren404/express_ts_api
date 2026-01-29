@@ -50,9 +50,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-export interface UserDocument extends Document {
-  email: string;
-  role: UserRole;
-}
-
 export const UserModel = mongoose.model<UserDocument>("User", userSchema);

@@ -38,7 +38,7 @@ export const createUser = async (
 };
 
 export const getAllUsers = async () => {
-  const users = await UserModel.find();
+  const users = await UserModel.find({});
   if (users.length === 0) {
     throw new AppError("No users found", 404);
   }

@@ -7,14 +7,14 @@ import authRoutes from "./routes/auth.routes";
 export const createApp = () => {
   const app = express();
   app.use(express.json());
-  app.use("/api/user", userRoutes);
+
+  app.use("/api/auth", authRoutes);
+  app.use("/api/users", userRoutes);
 
   // * Error handling middleware
   app.use(errorHandler);
-  app.use("/api/auth", authRoutes);
 
   // Health check endpoint
-
   app.get("/health", (req: Request, res: Response) => {
     res
       .status(200)
