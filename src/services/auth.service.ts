@@ -51,9 +51,15 @@ export const loginUserService = async (userCredentials: LoginUserTypeZ) => {
   const expiresIn = (process.env.JWT_EXPIRES_IN ??
     "1d") as SignOptions["expiresIn"];
 
-  const token = Jwt.sign({ id: user._id, email: user.email }, jwtSecret, {
-    expiresIn,
-  });
+  const token = Jwt.sign(
+    {
+      id: user._id,
+      email: user.email,
+      role: user.role,
+    },
+    process.env.JWT_SECRET!,
+    { expiresIn },
+  );
 
   user.password = undefined;
 

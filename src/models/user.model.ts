@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import { z } from "zod";
 
+export type UserRole = "admin" | "user";
+
 export interface UserDocument {
   id: string;
   name: string;
@@ -9,6 +11,7 @@ export interface UserDocument {
   password: string | undefined;
   createdAt: Date;
   updatedAt: Date;
+  role?: UserRole;
 }
 
 export const createUservalidation = z.object({
@@ -42,8 +45,14 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     age: { type: Number, max: 122, min: 0, required: true },
     password: { type: String, required: true, select: false },
+    role: { type: String, enum: ["admin", "user"], default: "user" },
   },
   { timestamps: true },
 );
+
+export interface UserDocument extends Document {
+  email: string;
+  role: UserRole;
+}
 
 export const UserModel = mongoose.model<UserDocument>("User", userSchema);
