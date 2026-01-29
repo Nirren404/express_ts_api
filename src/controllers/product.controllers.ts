@@ -8,10 +8,12 @@ export const createProduct = async (
   next: NextFunction,
 ) => {
   try {
-    const { name, price, description } = req.body;
+    const { name, price, description, stock, category } = req.body;
     const newProduct = await productService.createProduct(
       name,
       price,
+      stock,
+      category,
       description,
     );
     res

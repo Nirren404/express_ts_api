@@ -6,17 +6,23 @@ export interface Product {
   name: string;
   price: number;
   description?: string;
+  stock: number;
+  category: string;
 }
 
 export const createProduct = async (
   name: string,
   price: number,
+  stock: number,
+  category: string,
   description?: string,
 ) => {
   const newProduct: ProductDocument = {
     name,
     price,
     description,
+    stock,
+    category,
   };
   const existingProduct = await ProductModel.findOne({ name });
   if (existingProduct) {
