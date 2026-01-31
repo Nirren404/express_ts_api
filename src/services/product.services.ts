@@ -49,6 +49,8 @@ export const createProduct = async (
     description,
     stock,
     category,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
   const existingProduct = await ProductModel.findOne({ name });
   if (existingProduct) {
@@ -64,7 +66,7 @@ export const findAllProducts = async (
   const {
     limit,
     category,
-    post,
+    page,
     fields,
     minPrice,
     maxPrice,
@@ -74,6 +76,7 @@ export const findAllProducts = async (
   } = params;
 
   const filters: Record<string, unknown> = {};
+
   if (category) filters.category = category;
 
   const priceFilter: Record<string, number> = {};
