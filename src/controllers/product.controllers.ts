@@ -1,6 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
 import * as productService from "../services/product.services";
 import { CreateProductTypeZ } from "../schemas/product.schema";
+import { ProductListQueryParams, ProductListRequest } from "../types/query.types";
+import { capLimit, DEFAULT_LIMIT, DEFAULT_PAGE, toPositiveInteger,  } from "../utils/query.util";
 
 export const createProduct = async (
   req: Request<{}, {}, CreateProductTypeZ>,
@@ -30,7 +32,35 @@ export const getAllProducts = async (
   next: NextFunction,
 ) => {
   try {
-    const products = await productService.findAllProducts();
+    try {
+const {
+page: pageParam,
+limit: limitParam,
+sort,
+fields,
+search,
+category,
+minPrice,
+maxPrice,
+inStock,
+} = req.query as ProductListQueryParams;
+
+const page = toPositiveInteger(pageParam, DEFAULT_PAGE);
+const limit = capLimit(toPositiveInteger(limitParam, DEFAULT_LIMIT));
+
+const options: ProductListRequest = {
+page,
+limit,
+sort,
+fields,
+search,
+category,
+minPrice,
+maxPrice,
+inStock,
+};
+
+    const products = await productService.findAllProducts(options);
     res.status(200).json(products);
   } catch (error) {
     next(error);
