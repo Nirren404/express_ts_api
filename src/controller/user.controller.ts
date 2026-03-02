@@ -8,8 +8,8 @@ export const createUser = async (
   next: NextFunction,
 ) => {
   try {
-    const { name, email, age, password } = req.body;
-    const newUser = await userService.createUser(name, email, age, password);
+    const data = req.body;
+    const newUser = await userService.createUser(data);
     res.status(201).json(newUser);
   } catch (error) {
     next(error);
@@ -50,6 +50,9 @@ export const updateById = async (
 ) => {
   try {
     const changeUser = await userService.updateById(req.params.id, req.body);
+    if (!changeUser) {
+      return res.status(404).json({ msg: "User not found" });
+    }
     res.status(200).json(changeUser);
   } catch (error) {
     next(error);
