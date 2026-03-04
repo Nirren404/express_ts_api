@@ -1,74 +1,76 @@
-import type { Request, Response, NextFunction } from "express";
+import type { Request, Response } from "express";
 import * as userService from "../services/user.services";
-import { RegisterUserTypeZ } from "../models/user.model";
 
-export const createUser = async (
-  req: Request<{}, {}, RegisterUserTypeZ>,
-  res: Response,
-  next: NextFunction,
-) => {
+// CREATE USER
+export const createUser = async (req: Request, res: Response) => {
   try {
     const data = req.body;
-    const newUser = await userService.createUser(data);
+    const newUser = await userService.createUser(data.name, data.email);
     res.status(201).json(newUser);
-  } catch (error) {
-    next(error);
+  } catch (error: any) {
+    res
+      .status(error.statusCode || 500)
+      .json({ message: error.message || "Failed to create user!" });
   }
 };
 
-export const getAllUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+// GET ALL USERS
+export const getAllUsers = async (req: Request, res: Response) => {
   try {
     const users = await userService.getAllUsers();
     res.status(200).json(users);
-  } catch (error) {
-    next(error);
+  } catch (error: any) {
+    res
+      .status(error.statusCode || 500)
+      .json({ message: error.message || "Failed to fetch users" });
   }
 };
 
+// GET USER BY ID
 export const getUserById = async (
   req: Request<{ id: string }>,
   res: Response,
-  next: NextFunction,
 ) => {
   try {
-    const user = await userService.getUserById(req.params.id);
-
+    const id = parseInt(req.params.id);
+    const user = await userService.getUserById(id);
     res.status(200).json(user);
-  } catch (error) {
-    next(error);
+  } catch (error: any) {
+    res
+      .status(error.statusCode || 500)
+      .json({ message: error.message || "Failed to fetch user" });
   }
 };
 
-export const updateById = async (
-  req: Request<{ id: string }, {}, Partial<userService.Users>>,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const changeUser = await userService.updateById(req.params.id, req.body);
-    if (!changeUser) {
-      return res.status(404).json({ msg: "User not found" });
-    }
-    res.status(200).json(changeUser);
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const deleteById = async (
+// UPDATE USER
+export const updateUser = async (
   req: Request<{ id: string }>,
   res: Response,
-  next: NextFunction,
 ) => {
   try {
-    const removeUser = await userService.deleteById(req.params.id);
+    const id = parseInt(req.params.id);
+    const updateData = req.body;
+    const updatedUser = await userService.updateUser(id, updateData);
+    res.status(200).json(updatedUser);
+  } catch (error: any) {
+    res
+      .status(error.statusCode || 500)
+      .json({ message: error.message || "Failed to update user" });
+  }
+};
 
-    res.status(200).json({ msg: "User deleted successfully" });
-  } catch (error) {
-    next(error);
+// DELETE USER
+export const deleteUser = async (
+  req: Request<{ id: string }>,
+  res: Response,
+) => {
+  try {
+    const id = parseInt(req.params.id);
+    const deletedUser = await userService.deleteById(id);
+    res.status(200).json({ msg: "User deleted successfully", deletedUser });
+  } catch (error: any) {
+    res
+      .status(error.statusCode || 500)
+      .json({ message: error.message || "Failed to delete user" });
   }
 };

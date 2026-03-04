@@ -7,19 +7,12 @@ export interface UserDocument {
   id: string;
   name: string;
   email: string;
-  age: number;
-  password: string | undefined;
-  role?: UserRole;
-  createdAt?: Date;
-  updatedAt?: Date;
 }
 
 export const createUserValidation = z.object({
   body: z.object({
-    firstname: z.string("Please enter a valid name").min(2),
-    lastname: z.string("Please enter a valid last name").min(2),
+    name: z.string("Please enter a valid name").min(2),
     email: z.email("Please enter a valid email"),
-    password: z.string("Please enter a valid password").min(8),
   }),
 });
 
@@ -32,7 +25,6 @@ export const registerUserValidation = createUserValidation.extend({
 export const loginUserValidation = z.object({
   body: z.object({
     email: z.email("Please enter a valid email..."),
-    password: z.string("Please enter a valid password...").min(8),
   }),
 });
 
@@ -45,8 +37,6 @@ const userSchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     age: { type: Number, required: true },
-    password: { type: String, required: true, select: false },
-    role: { type: String, enum: ["admin", "user"], default: "user" },
   },
   { timestamps: true },
 );
