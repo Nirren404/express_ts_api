@@ -1,7 +1,7 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    "target": "es2020",
+    "target": "es2015",
     "module": "nodenext",
     "rootDir": "src",
     "outDir": "dist",
@@ -9,5 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "moduleResolution": "nodenext"
-  }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }
